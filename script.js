@@ -4,7 +4,7 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
 /////////////////////////////////////
-
+/*
 const rendorCountryData = function (data, className = '') {
   const flag = data.flags.png;
   const countryName = data.name.common;
@@ -27,7 +27,7 @@ const rendorCountryData = function (data, className = '') {
   countriesContainer.insertAdjacentHTML('beforeend', html);
   // countriesContainer.style.opacity = 1;
 };
-/*
+
 const getDataCountryAndNeigbour = function (country) {
   const request = new XMLHttpRequest();
   request.open('get', `https://restcountries.com/v3.1/name/${country}`);
@@ -52,7 +52,7 @@ const getDataCountryAndNeigbour = function (country) {
   });
 };
 
-getDataCountryAndNeigbour('america');*/
+getDataCountryAndNeigbour('america');
 
 // const getCountryData = function (country) {
 //   fetch(`https://restcountries.com/v3.1/name/${country}`).then(function (
@@ -97,4 +97,92 @@ const getCountryData = function (country) {
 
 btn.addEventListener('click', function () {
   getCountryData('Australia');
+});
+
+const lotteryTicket = new Promise(function (resolve, reject) {
+  console.log('lottery ticket is happeing');
+  setTimeout(() => {
+    if (Math.random() >= 0.5) {
+      resolve('you win 💰');
+    } else {
+      reject(new Error('you lost your money'));
+    }
+  });
+}, 2000);
+
+lotteryTicket.then(res => console.log(res)).catch(err => console.error(err));
+
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+wait(2)
+  .then(() => {
+    console.log('2 seconds passed');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('1 second passed');
+  });
+
+
+navigator.geolocation.getCurrentPosition(
+  postion => console.log(postion),
+  rejection => console.error(rejection)
+);
+
+const postion = function () {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
+postion().then(postion => console.log(postion));
+*/
+// const imageContainer = document.querySelector('.images');
+// const url = 'https://source.unsplash.com/random/1600x700';
+
+// const createImage = function () {
+//   return new Promise((resolve, reject) => {
+//     fetch(url).then(response => {
+//       if (response.ok) {
+//         resolve(response.url);
+//       } else {
+//         reject(new Error('failed to fetch images'));
+//       }
+//     });
+//     // .then(imageUrl => resolve(imageUrl))
+//     // .catch(error => reject(error));
+//   });
+// };
+
+// createImage()
+//   .then(imageUrl => {
+//     const ImageElement = document.createElement('img');
+//     ImageElement.src = imageUrl;
+//     ImageElement.alt = 'apiimage';
+//     imageContainer.insertAdjacentElement('afterend', ImageElement);
+//   })
+//   .catch(error => console.error('error', error.message));
+const imageContainer = document.querySelector('.images');
+const url = 'https://source.unsplash.com/random/900x700';
+
+const createImage = async function () {
+  try {
+    const res = await fetch(url);
+    return res.url;
+  } catch (error) {
+    console.error('error not valid photo', error);
+    throw error;
+  }
+};
+
+// .then(imageUrl => resolve(imageUrl))
+// .catch(error => reject(error));
+
+createImage().then(imageUrl => {
+  const ImageElement = document.createElement('img');
+  ImageElement.src = imageUrl;
+  ImageElement.alt = 'apiimage';
+  imageContainer.insertAdjacentElement('afterend', ImageElement);
 });
